@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Build and editor artifacts
+dist/
+build/
+*.log
+.DS_Store
+Thumbs.db
