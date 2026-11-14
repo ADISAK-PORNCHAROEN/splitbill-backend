@@ -11,7 +11,7 @@ The source is the owner-provided Developer Take-Home Test, pages 1–5, and the 
 | Six group/expense/balance routes | `app/api/controllers` and HTTP integration tests. `/api/health` remains available separately. |
 | Decimal strings, equal and exact allocation, precision and zero-sum balances | Domain allocation tests plus HTTP tests for 100.00, exact mismatch, precision, range, small equal split and balances. |
 | Group access, membership and payer-only soft deletion | HTTP tests for missing/unknown users, nonmember reads and writes, nonpayer deletion, repeated deletion and excluded deleted amounts. `X-User` is identification only, not production authentication. |
-| Group-scoped idempotency and concurrency | Eight simultaneous HTTP requests return one 201 and seven 200 responses with one expense; replay after deletion and across members is also tested. |
+| Group-scoped idempotency and concurrency | Concurrent HTTP tests include bursts of eight and 48 requests, each creating one expense and returning the same result; replay after deletion and across members is also tested. |
 | .env configuration, errors, Ruff and separated layers | Settings and `.env.example`, HTTP error-envelope tests, Ruff, and controller/service/repository/entity structure. Local CORS origins are configurable. |
 
 ## Evaluation criteria
@@ -29,7 +29,7 @@ The source is the owner-provided Developer Take-Home Test, pages 1–5, and the 
 - `uv lock --check` confirmed the lockfile is in sync.
 - `uv run --locked ruff check .` and `uv run --locked ruff format --check .` passed.
 - `uvx ty check app` passed; `ty` is run as a separate uv tool, not added to project dependencies.
-- `uv run --locked pytest -q` passed 35 tests in the isolated PostgreSQL suite, with one Starlette TestClient deprecation warning.
+- `uv run --locked pytest -q` passed 36 tests in the isolated PostgreSQL suite, with one Starlette TestClient deprecation warning.
 - A separately started Uvicorn process was exercised over local HTTP against a fresh temporary PostgreSQL database. Health returned 200, expense creation 201, key replay 200, balances 200, nonmember access 404, nonpayer deletion 403 and payer deletion 204. Direct SQL confirmed one expense and three shares, then confirmed the soft-deleted row remained. The temporary database was removed.
 - Security review traced identity, authorization, input validation, scoped idempotency, soft deletion, request-body handling, CORS and test-database cleanup. Independent review findings were corrected; this is a scoped code review, not a complete security audit. The `X-User` identity can be spoofed by design.
 

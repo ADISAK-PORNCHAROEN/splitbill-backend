@@ -1,11 +1,12 @@
 import json
+from decimal import Decimal
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, Request, Response
 from sqlalchemy.orm import Session
 from starlette.concurrency import run_in_threadpool
 
-from app.core.database import get_session
+from app.core.database import SessionLocal, get_session
 from app.domain.types import bad_request
 from app.services import expenses
 from app.services.groups import authorize, identify
@@ -21,6 +22,30 @@ def unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
             raise ValueError("Duplicate JSON key")
         result[key] = value
     return result
+
+
+def reject_constant(value: str) -> None:
+    raise ValueError(f"Invalid JSON constant: {value}")
+
+
+def process_expense(
+    group_id: int, x_user: str | None, key: str | None, raw_body: bytearray, too_large: bool
+) -> tuple[dict, bool]:
+    with SessionLocal() as session:
+        actor = identify(session, x_user)
+        authorize(session, actor.id, group_id)
+        if too_large:
+            raise bad_request("Request body is too large")
+        try:
+            body = json.loads(
+                raw_body,
+                object_pairs_hook=unique_object,
+                parse_float=Decimal,
+                parse_constant=reject_constant,
+            )
+        except (ValueError, UnicodeDecodeError, RecursionError):
+            raise bad_request("Invalid JSON body") from None
+        return expenses.create(session, actor.id, group_id, key, body)
 
 
 @router.post(
@@ -76,7 +101,6 @@ async def create_expense(
     group_id: int,
     request: Request,
     response: Response,
-    session: Annotated[Session, Depends(get_session)],
     x_user: Annotated[str | None, Header()] = None,
     idempotency_key: Annotated[str | None, Header()] = None,
 ):
@@ -87,16 +111,8 @@ async def create_expense(
             too_large = True
             break
         raw_body.extend(chunk)
-    actor = await run_in_threadpool(identify, session, x_user)
-    await run_in_threadpool(authorize, session, actor.id, group_id)
-    if too_large:
-        raise bad_request("Request body is too large")
-    try:
-        body = json.loads(raw_body, object_pairs_hook=unique_object)
-    except (ValueError, UnicodeDecodeError, RecursionError):
-        raise bad_request("Invalid JSON body") from None
     result, created = await run_in_threadpool(
-        expenses.create, session, actor.id, group_id, idempotency_key, body
+        process_expense, group_id, x_user, idempotency_key, raw_body, too_large
     )
     response.status_code = 201 if created else 200
     return result

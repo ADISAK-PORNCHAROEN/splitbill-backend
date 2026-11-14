@@ -1,3 +1,4 @@
+import asyncio
 import json
 import subprocess
 import sys
@@ -5,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal
 from threading import Barrier
 
+import httpx
 import psycopg
 import pytest
 
@@ -211,6 +213,26 @@ def test_concurrent_replays_create_one_expense(client):
     payloads = [response.json() for response in responses]
     assert all(payload == payloads[0] for payload in payloads)
     assert client.get("/groups/1/expenses", headers=headers()).json() == [payloads[0]]
+
+
+def test_many_concurrent_replays_share_one_database_result(client):
+    from app.main import app
+
+    async def run_requests():
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as async_client:
+            requests = [
+                async_client.post("/groups/1/expenses", headers=headers(key="burst"), json=equal())
+                for _ in range(48)
+            ]
+            return await asyncio.wait_for(asyncio.gather(*requests), timeout=30)
+
+    responses = asyncio.run(run_requests())
+    assert sorted(response.status_code for response in responses) == [200] * 47 + [201]
+    ids = {response.json()["id"] for response in responses}
+    assert len(ids) == 1
+    assert len(client.get("/groups/1/expenses", headers=headers()).json()) == 1
 
 
 def test_concurrent_deletes_have_one_success(client):
