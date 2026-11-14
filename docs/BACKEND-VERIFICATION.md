@@ -29,7 +29,7 @@ The source is the owner-provided Developer Take-Home Test, pages 1–5, and the 
 - `uv lock --check` confirmed the lockfile is in sync.
 - `uv run --locked ruff check .` and `uv run --locked ruff format --check .` passed.
 - `uvx ty check app` passed; `ty` is run as a separate uv tool, not added to project dependencies.
-- `uv run --locked pytest -q` passed 36 tests in the isolated PostgreSQL suite, with one Starlette TestClient deprecation warning.
+- `uv run --locked pytest -q` passed 37 tests in the isolated PostgreSQL suite, with one Starlette TestClient deprecation warning.
 - A separately started Uvicorn process was exercised over local HTTP against a fresh temporary PostgreSQL database. Health returned 200, expense creation 201, key replay 200, balances 200, nonmember access 404, nonpayer deletion 403 and payer deletion 204. Direct SQL confirmed one expense and three shares, then confirmed the soft-deleted row remained. The temporary database was removed.
 - Security review traced identity, authorization, input validation, scoped idempotency, soft deletion, request-body handling, CORS and test-database cleanup. Independent review findings were corrected; this is a scoped code review, not a complete security audit. The `X-User` identity can be spoofed by design.
 

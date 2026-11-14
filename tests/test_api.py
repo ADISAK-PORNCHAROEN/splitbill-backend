@@ -171,6 +171,17 @@ def test_duplicate_json_keys_and_invalid_body_do_not_disclose_group(client):
     assert_error(client.post("/groups/2/expenses", headers=headers(key="bad"), content="{"), 404)
 
 
+def test_json_number_with_out_of_range_exponent_is_rejected(client):
+    body = (
+        '{"description":"Dinner","paid_by":"alice",'
+        '"amount":1e999999999999999999999999999,'
+        '"split":{"type":"equal","members":["alice"]}}'
+    )
+    assert_error(
+        client.post("/groups/1/expenses", headers=headers(key="exponent"), content=body), 400
+    )
+
+
 def test_body_size_limit_and_http_error_headers(client):
     body = b"x" * (1024 * 1024 + 1)
     assert_error(client.post("/groups/1/expenses", headers=headers(key="large"), content=body), 400)

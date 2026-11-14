@@ -1,5 +1,5 @@
 import json
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, Request, Response
@@ -43,7 +43,7 @@ def process_expense(
                 parse_float=Decimal,
                 parse_constant=reject_constant,
             )
-        except (ValueError, UnicodeDecodeError, RecursionError):
+        except (ValueError, UnicodeDecodeError, RecursionError, InvalidOperation):
             raise bad_request("Invalid JSON body") from None
         return expenses.create(session, actor.id, group_id, key, body)
 
