@@ -1,6 +1,6 @@
 # SplitBill backend specification
 
-Status: approved and published as [GitHub issue #1](https://github.com/ADISAK-PORNCHAROEN/splitbill-backend/issues/1). Based on the confirmed [backend plan](BACKEND-PLAN.md), the supplied take-home brief and the current scaffold. This document describes the target; the existing application exposes only a health endpoint.
+Status: approved and published as [GitHub issue #1](https://github.com/ADISAK-PORNCHAROEN/splitbill-backend/issues/1). Based on the confirmed [backend plan](BACKEND-PLAN.md) and supplied take-home brief. This document describes the target; consult the implementation and tests for current behavior.
 
 ## Problem Statement
 

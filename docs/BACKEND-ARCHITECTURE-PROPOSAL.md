@@ -1,10 +1,10 @@
 # Backend architecture proposal
 
-Status: entity–repository–service–controller structure approved by the user; empty folders are scaffolded, but no backend behavior is implemented. Based on the user-approved [backend plan](BACKEND-PLAN.md), [specification](BACKEND-SPEC.md), and current FastAPI scaffold. This structure is the user's choice, not a naming convention mandated by the PDF.
+Status: entity–repository–service–controller structure approved by the user and used by the backend implementation. Based on the user-approved [backend plan](BACKEND-PLAN.md) and [specification](BACKEND-SPEC.md). This structure is the user's choice, not a naming convention mandated by the PDF. The structure and API sketches below are design context; source code owns current behavior.
 
 ## Problem
 
-The brief requires FastAPI, PostgreSQL 16, Alembic and separation of routing, business rules and data access. It also requires the submitted repository to contain `backend/` and `frontend/` source directories (page 4). It does not prescribe the directories inside `backend/` or a named architecture. The current repository is a backend-only repository with `app/` at its root; whether and how it will be combined with the frontend to satisfy that submission layout remains a separate decision. The scaffold currently exposes only `/api/health`; models, database session, migrations, business logic and tests are not implemented. The six product routes remain at `/groups` per the approved contract.
+The brief requires FastAPI, PostgreSQL 16, Alembic and separation of routing, business rules and data access. It also requires the submitted repository to contain `backend/` and `frontend/` source directories (page 4). It does not prescribe the directories inside `backend/` or a named architecture. The current repository is a backend-only repository with `app/` at its root; whether and how it will be combined with the frontend to satisfy that submission layout remains a separate decision. The six product routes use `/groups` per the approved contract, alongside `/api/health`.
 
 ## Usage: caller's view
 
@@ -46,7 +46,7 @@ tests/
   integration/                # HTTP + isolated PostgreSQL, including races
 ```
 
-Folder boundaries are scaffolded; the module names in the diagram are planned, not yet implemented. Reuse the existing `app/domain`, `app/services` and `app/repositories` packages. Controllers define their FastAPI `APIRouter` endpoints directly, so there is no second pass-through route layer. Retain the existing health route. The unused empty `app/models` marker was removed in favor of `app/entities` as the sole persistence mapping location.
+Controllers define their FastAPI `APIRouter` endpoints directly, so there is no second pass-through route layer. The unused empty `app/models` marker was removed in favor of `app/entities` as the sole persistence mapping location. Consult the actual source tree for implemented module names; the diagram is a design sketch.
 
 ```mermaid
 flowchart LR
@@ -94,7 +94,7 @@ Two independent sketches were reviewed against requirement fidelity, concurrency
 
 ## Testing and incremental delivery
 
-Use HTTP integration tests with a **separate PostgreSQL test database**, migrations and deterministic seed lifecycle. Exercise the six required cases and user-approved edge cases. For concurrent keys use at least two independent connections and controlled overlap; assert one stored expense and consistent original responses, including winner rollback and replay after deletion. Test group-access precedence, two simultaneous deletes, stable sorting, range/precision and balances after deletion. Add focused unit tests for Decimal parsing and allocation. No application tests currently exist.
+Use HTTP integration tests with a **separate PostgreSQL test database**, migrations and deterministic seed lifecycle. Exercise the six required cases and user-approved edge cases. For concurrent keys use independent requests; assert one stored expense and consistent original responses, including replay after deletion. Test group-access precedence, simultaneous deletes, stable sorting, range/precision and balances after deletion. Consult the test suite for exact coverage; winner-rollback behavior and focused standalone unit tests remain possible extensions.
 
 Follow the approved ticket sequence in [BACKEND-TICKETS.md](BACKEND-TICKETS.md): group reads and isolated test setup first, then create/equal split and transactional idempotency, then exact split, balances and list/delete, followed by full integration and documentation. Check whether parallel slices affect the same shared service or repository code before running them concurrently.
 
@@ -103,5 +103,5 @@ Follow the approved ticket sequence in [BACKEND-TICKETS.md](BACKEND-TICKETS.md):
 - Final response shapes for groups, balances and `shares` remain to be specified within the approved object/array and string-money conventions.
 - Choose how the isolated test database is provisioned and refuse unsafe use of the development database.
 - Define the repeatable seed command's behavior if a username already exists under a conflicting ID; do not overwrite user data or rewind sequences.
-- Existing settings fall back to port 5432 without `.env`, while the development Compose setup uses 5433. Address the mismatch deliberately during implementation.
+- Settings and development Compose use port 5433 by default; deployments can override `DATABASE_URL`.
 - If future features allow changing group membership, revisit authorization/transaction locking; membership mutation is outside the current brief.

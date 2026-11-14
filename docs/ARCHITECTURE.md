@@ -1,5 +1,5 @@
 # Architecture
 
-Currently `app/main.py` mounts the health router at `/api`; `app/core/config.py` supplies settings. The brief calls for separate routes, business logic and data access, FastAPI, PostgreSQL 16 and Alembic; these are target requirements, not evidence of implemented layers. Establish contracts from the brief before adding APIs and document choices as they are made.
+`app/main.py` mounts the health router at `/api` and the group controllers at `/groups`; `app/core/config.py` supplies settings. Controllers adapt HTTP, services enforce use cases and transactions, repositories access PostgreSQL and entities define SQLAlchemy mappings. Domain functions validate decimal amounts and calculate shares. Alembic owns schema migration and `app.seed` supplies the initial data.
 
-The user selected an entity–repository–service–controller structure. Its folder boundaries are scaffolded, but the business logic and database models are not implemented. See [the approved architecture proposal](BACKEND-ARCHITECTURE-PROPOSAL.md) for responsibilities, transaction design and the intended implementation sequence.
+The user selected an entity–repository–service–controller structure. See [the approved architecture proposal](BACKEND-ARCHITECTURE-PROPOSAL.md) for responsibilities, transaction design and implementation decisions.

@@ -1,6 +1,6 @@
 # Product and requirements
 
-Source: owner-supplied Developer-Take-Home-Test.pdf, backend and business-rule sections. These are assignment requirements; implementation is not yet established. Current source: README.md and app/main.py expose only `/api/health`.
+Source: owner-supplied Developer-Take-Home-Test.pdf, backend and business-rule sections. These are assignment requirements. The current implementation exposes the group and expense endpoints described below in addition to `/api/health`; see the test suite and README for verification and limitations.
 
 Users interact as seeded Alice, Bob, Carol and Dan through `X-User`; full authentication is out of scope. Seed group 1 Chiang Mai trip (Alice, Bob, Carol) and group 2 Office lunch (Bob, Dan). Required endpoints: list and inspect groups; create and list expenses (newest first); payer-only soft-delete; retrieve group balances, where positive means owed. Consult the PDF for exact endpoint paths and request/response details.
 

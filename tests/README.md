@@ -1,6 +1,6 @@
-# Required test cases to implement
+# Backend test cases
 
-This file tracks the cases from the take-home brief. No automated tests are implemented in this scaffold yet.
+`uv run --locked pytest` runs the tests against an isolated temporary PostgreSQL database. See [testing guidance](../docs/TESTING.md) for setup. The suite covers the required cases from the take-home brief:
 
 - Equal split of 100.00 among three members allocates 33.34, 33.33, 33.33 and leaves zero-sum balances.
 - Reject exact shares that do not sum to the expense amount.
