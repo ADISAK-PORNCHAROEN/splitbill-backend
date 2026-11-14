@@ -1,5 +1,14 @@
 # AI notes
 
-AI assistance was used to read the supplied take-home brief and create this FastAPI scaffold. The current implementation includes settings and a health endpoint only; business behavior and automated tests have not been implemented or run.
+OpenAI Codex assisted with reading the supplied brief, setting up the FastAPI scaffold, drafting the agreed specification and implementing the backend and tests. The user selected the architecture and resolved product ambiguities; the submitter remains responsible for reviewing and explaining the code.
 
-No real credentials or secrets were added. `.env.example` contains local placeholder values only. Review future implementation diffs and record any AI-generated behavior requiring special attention before submission.
+Examples of prompts used:
+
+- Ask Codex to read the backend and business rules in the take-home PDF and set up the project workflow.
+- Ask Codex to implement the agreed backend specification, exercise real PostgreSQL integration tests, review security and preserve existing work.
+
+One incorrect AI statement during architecture planning said the brief did not prescribe a folder layout. The user questioned it; rereading page 4 showed that the submission must contain `backend/` and `frontend/` directories. The architecture proposal was corrected to distinguish that requirement from the unspecified internal backend folder names. This repository currently contains the backend alone, so a complete submission still needs the required combined layout.
+
+During this implementation, a separate review identified invalid Unicode and duplicate JSON inputs, slow request bodies holding database connections, and missing HTTP error headers. The implementation was adjusted and regression cases were added. Each commit is reviewed through its staged diff and applicable checks; the final PR is reviewed again against the spec and security boundaries. Automated checks do not replace human review.
+
+No real credentials or secrets were added. `.env.example` contains local placeholder values only. Approximate time across prior sessions was not recorded and must be supplied by the submitter before submission.

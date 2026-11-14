@@ -1,8 +1,8 @@
 # Backend requirements and implementation plan
 
-Source: owner-supplied `Developer-Take-Home-Test.pdf`, pages 1–3 (backend), with submission requirements on pages 4–5. The original is outside this repository. This is a planning record, not evidence that any feature is implemented. The current scaffold provides only `GET /api/health`.
+Source: owner-supplied `Developer-Take-Home-Test.pdf`, pages 1–3 (backend), with submission requirements on pages 4–5. The original is outside this repository. This is a planning record; see the implementation and tests for current behavior.
 
-Status: the user confirmed the plan and recorded decisions on 2026-11-14. Backend implementation remains a separate task. Exact success-response fields not prescribed by the brief may be completed during API design within the conventions below.
+Status: the user confirmed the plan and recorded decisions on 2026-11-14. The backend implementation follows the conventions below; see the frontend handoff for actual response fields.
 
 ## Required environment
 
