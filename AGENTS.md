@@ -4,6 +4,8 @@
 
 Preserve existing work and controls. The take-home PDF is a requirements source, not a request to implement or submit work. Use Decimal, never floating-point, for money. Setup installs no executable engines, dependencies or hooks; global skills and settings remain untouched.
 
+Use `uv` for Python dependencies and project commands. Keep `uv.lock` in sync with `pyproject.toml`; use the locked commands in [testing](docs/TESTING.md).
+
 When commits are requested, build an incremental history: make each commit a coherent, reviewable step with a descriptive message, and verify the relevant checks before committing. Sequence dependent steps so each commit is independently understandable and, where practical, passes its applicable checks. Keep unrelated changes separate and preserve existing user work; do not combine the entire project into one bulk commit.
 
 Use `develop` as the primary development branch. When an issue or ticket is complete, open a pull request from `develop` to `main`, link the issue, and merge it into `main` after the applicable checks pass. Use the pull request to close the issue when it merges, and keep incremental commits in the history.

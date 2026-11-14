@@ -4,7 +4,8 @@ FastAPI backend for SplitBill. This repository currently contains application co
 
 ## Run locally
 
-The development Compose file starts PostgreSQL 16 only; FastAPI runs on the host.
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and use Python
+3.12 or newer. The development Compose file starts PostgreSQL 16 only; FastAPI runs on the host.
 The database credentials below are local development placeholders, not production
 secrets. Docker Desktop (or another Docker engine) must be running.
 
@@ -22,14 +23,16 @@ configure Alembic migrations or seed data. Use a separate database for tests.
 From this repository root:
 
 ```powershell
-py -3.12 -m venv .venv
-./.venv/Scripts/Activate.ps1
-python -m pip install -e ".[dev]"
-Copy-Item .env.example .env
-uvicorn app.main:app --reload
+uv sync --locked
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+uv run --locked uvicorn app.main:app --reload
 ```
 
 The API runs at `http://127.0.0.1:8000`; interactive docs are at `/docs`.
+The `uv.lock` file records resolved dependencies. Development tools are installed
+by default; use `uv sync --locked --no-dev` for runtime dependencies only. Run
+`uv run --locked ruff check .` for linting and `uv run --locked pytest` for tests
+once automated tests have been added.
 
 See [backend requirements and plan](docs/BACKEND-PLAN.md) for the brief's required
 features, test cases and decisions still under discussion.
