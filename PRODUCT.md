@@ -1,0 +1,9 @@
+# Product and requirements
+
+Source: owner-supplied Developer-Take-Home-Test.pdf, backend and business-rule sections. These are assignment requirements; implementation is not yet established. Current source: README.md and app/main.py expose only `/api/health`.
+
+Users interact as seeded Alice, Bob, Carol and Dan through `X-User`; full authentication is out of scope. Seed group 1 Chiang Mai trip (Alice, Bob, Carol) and group 2 Office lunch (Bob, Dan). Required endpoints: list and inspect groups; create and list expenses (newest first); payer-only soft-delete; retrieve group balances, where positive means owed. Consult the PDF for exact endpoint paths and request/response details.
+
+Money arrives and leaves as strings, uses Python Decimal and PostgreSQL NUMERIC(12,2), never floats; reject nonpositive amounts and more than two decimal places. Exact shares must sum to the expense. For equal splits, allocate leftover satang one at a time in listed order. Balances sum to zero. Only group members may access a group; payer and split participants must be members. Expenses are immutable; deleted expenses are excluded from balances. A group-scoped idempotency key returns the original expense without duplication, including concurrent requests. Choose a 403/404 policy and explain its rationale in README.md. Return a descriptive error for an invalid exact split and use consistent JSON errors and status codes. Record assumptions in README.md and AI usage in AI_NOTES.md.
+
+Acceptance includes tests for 100.00 split into 33.34/33.33/33.33 and zero-sum balances, invalid exact totals, three decimal places, duplicate keys including concurrency, Alice's denied access to group 2, and payer-only deletion. Settle-up, repayments and Docker Compose are optional after required behavior is tested. Product decisions beyond the brief remain unconfirmed.

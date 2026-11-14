@@ -17,3 +17,6 @@ build/
 *.log
 .DS_Store
 Thumbs.db
+
+# Generated Graphify data
+/graphify-out/
