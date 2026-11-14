@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "documents": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "PRODUCT.md",
+    "CONTEXT.md",
+    "DESIGN.md",
+    "SECURITY.md",
+    "docs/ARCHITECTURE.md",
+    "docs/SCHEMA.md",
+    "docs/TESTING.md",
+    "docs/SECURITY-MODEL.md",
+    "docs/agents/document-delivery.md",
+    "docs/agents/skills-checklist.md",
+    "docs/AI-FOUNDATION-REPORT.md",
+    "docs/agents/skill-source-inventories.md",
+    ".agents/skills/test-engineering/references/testing-contract.md",
+    ".agents/skills/security-review/references/review-contract.md",
+    ".agents/skills/hook-management/references/hook-change-contract.md",
+    "docs/history/agent-instructions/index.md",
+    "docs/history/agent-instructions/AGENTS.2026-11-14-01166570d03b.md"
+  ],
+  "instructions": {
+    "format": "foundation-v1",
+    "guide": "AGENTS.md",
+    "bridge": "CLAUDE.md",
+    "mode": "replaced",
+    "managedBlocks": [],
+    "historyIndex": "docs/history/agent-instructions/index.md",
+    "archives": [
+      {
+        "source": "AGENTS.md",
+        "path": "docs/history/agent-instructions/AGENTS.2026-11-14-01166570d03b.md",
+        "sha256": "01166570d03bef3e01be60cb651c3eddadbda2dbec174dd552e4b245cb038a11"
+      }
+    ]
+  },
+  "requiredSkills": [
+    "test-engineering",
+    "security-review",
+    "graphify",
+    "hook-management"
+  ],
+  "skillPaths": [
+    ".agents/skills/test-engineering",
+    ".agents/skills/security-review",
+    ".agents/skills/graphify",
+    ".agents/skills/hook-management"
+  ],
+  "skillInventory": [
+    {
+      "name": "test-engineering",
+      "scope": "project",
+      "source": "Foundation bundled snapshot",
+      "sourceRevision": "captured bundled snapshot sha256:48ab7a5135418971cc6e79b2bdc61e35008cde8c4fe7d1b99d7f5a57c0dd4bb5",
+      "sourceFileCount": 2,
+      "sourceInventorySha256": "48ab7a5135418971cc6e79b2bdc61e35008cde8c4fe7d1b99d7f5a57c0dd4bb5",
+      "path": ".agents/skills/test-engineering",
+      "invocationPolicy": "On behavior changes and test authoring",
+      "installed": true,
+      "installedFileCount": 2,
+      "installedInventorySha256": "48ab7a5135418971cc6e79b2bdc61e35008cde8c4fe7d1b99d7f5a57c0dd4bb5",
+      "missingFiles": [],
+      "changedFiles": [],
+      "addedFiles": [],
+      "approvedChanges": [],
+      "inventoryVerified": true,
+      "discoverable": "listed in fresh agent host catalog at project-local path; runtime invocation not exercised"
+    },
+    {
+      "name": "security-review",
+      "scope": "project",
+      "source": "Foundation bundled snapshot",
+      "sourceRevision": "captured bundled snapshot sha256:fd361917704ead6725794dea94fc08def2916ca5c8a561a9517192f7a4821d8a",
+      "sourceFileCount": 2,
+      "sourceInventorySha256": "fd361917704ead6725794dea94fc08def2916ca5c8a561a9517192f7a4821d8a",
+      "path": ".agents/skills/security-review",
+      "invocationPolicy": "On application-code, dependency, security-configuration, executable-configuration, or CI changes",
+      "installed": true,
+      "installedFileCount": 2,
+      "installedInventorySha256": "fd361917704ead6725794dea94fc08def2916ca5c8a561a9517192f7a4821d8a",
+      "missingFiles": [],
+      "changedFiles": [],
+      "addedFiles": [],
+      "approvedChanges": [],
+      "inventoryVerified": true,
+      "discoverable": "listed in fresh agent host catalog at project-local path; runtime invocation not exercised"
+    },
+    {
+      "name": "graphify",
+      "scope": "project",
+      "source": "Foundation bundled snapshot",
+      "sourceRevision": "captured bundled snapshot sha256:aab00021382bf9fa662577f3db7605d38269edc8aa9f690d80a47176cd34ccd7",
+      "sourceFileCount": 12,
+      "sourceInventorySha256": "aab00021382bf9fa662577f3db7605d38269edc8aa9f690d80a47176cd34ccd7",
+      "path": ".agents/skills/graphify",
+      "invocationPolicy": "Use for codebase/content discovery when relevant; CLI availability is separate",
+      "installed": true,
+      "installedFileCount": 12,
+      "installedInventorySha256": "aab00021382bf9fa662577f3db7605d38269edc8aa9f690d80a47176cd34ccd7",
+      "missingFiles": [],
+      "changedFiles": [],
+      "addedFiles": [],
+      "approvedChanges": [],
+      "inventoryVerified": true,
+      "discoverable": "listed in fresh agent host catalog at project-local path; runtime invocation not exercised"
+    },
+    {
+      "name": "hook-management",
+      "scope": "project",
+      "source": "Foundation bundled snapshot",
+      "sourceRevision": "captured bundled snapshot sha256:01e66efa463c5fff70ccf3b1eee3cfc741b693de6de574d9c2dc2f91a18fd10b",
+      "sourceFileCount": 2,
+      "sourceInventorySha256": "01e66efa463c5fff70ccf3b1eee3cfc741b693de6de574d9c2dc2f91a18fd10b",
+      "path": ".agents/skills/hook-management",
+      "invocationPolicy": "Only when the user requests hook inspection, configuration, migration, or removal",
+      "installed": true,
+      "installedFileCount": 2,
+      "installedInventorySha256": "01e66efa463c5fff70ccf3b1eee3cfc741b693de6de574d9c2dc2f91a18fd10b",
+      "missingFiles": [],
+      "changedFiles": [],
+      "addedFiles": [],
+      "approvedChanges": [],
+      "inventoryVerified": true,
+      "discoverable": "listed in fresh agent host catalog at project-local path; runtime invocation not exercised"
+    }
+  ],
+  "skillChecklist": "docs/agents/skills-checklist.md",
+  "excludedSkills": [
+    {
+      "name": "impeccable",
+      "scope": "project",
+      "reason": "Explicit user request to remove the project-local package; host installation remains untouched."
+    }
+  ]
+}
