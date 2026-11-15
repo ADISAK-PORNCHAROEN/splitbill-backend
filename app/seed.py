@@ -2,7 +2,9 @@ from sqlalchemy import select, text
 from sqlalchemy.dialects.postgresql import insert
 
 from app.core.database import SessionLocal
-from app.entities.models import Group, Membership, User
+from app.entities.group import Group
+from app.entities.membership import Membership
+from app.entities.user import User
 
 
 def seed() -> None:

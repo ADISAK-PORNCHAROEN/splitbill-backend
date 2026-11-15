@@ -5,6 +5,7 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
+from app.api.controllers.balances import router as balances_router
 from app.api.controllers.expenses import router as expenses_router
 from app.api.controllers.groups import router as groups_router
 from app.api.routes.health import router as health_router
@@ -21,6 +22,7 @@ app.add_middleware(
 app.include_router(health_router, prefix="/api")
 app.include_router(groups_router)
 app.include_router(expenses_router)
+app.include_router(balances_router)
 
 
 def openapi_schema():

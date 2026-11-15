@@ -1,11 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.entities.models import Group, Membership, User
-
-
-def find_user(session: Session, username: str) -> User | None:
-    return session.scalar(select(User).where(User.username == username))
+from app.entities.group import Group
+from app.entities.membership import Membership
+from app.entities.user import User
 
 
 def groups_for_user(session: Session, user_id: int) -> list[Group]:

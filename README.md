@@ -38,7 +38,9 @@ default local development credentials do not apply. It never uses the developmen
 database for test data.
 
 See [backend requirements and plan](docs/BACKEND-PLAN.md) for the brief's required
-features, test cases and decisions still under discussion.
+features, test cases and decisions still under discussion. See [backend module
+architecture](docs/BACKEND-MODULE-ARCHITECTURE.md) for the code layout and file
+ownership.
 
 ## Design decisions and limitations
 
