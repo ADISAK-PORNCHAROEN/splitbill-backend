@@ -1,6 +1,6 @@
 # Backend architecture proposal
 
-Status: entity–repository–service–controller structure approved by the user and used by the backend implementation. Based on the user-approved [backend plan](BACKEND-PLAN.md) and [specification](BACKEND-SPEC.md). This structure is the user's choice, not a naming convention mandated by the PDF. The structure and API sketches below are design context; source code owns current behavior.
+Status: this proposal records the original entity–repository–service–controller decision. The current file-level layout and rationale are in [Backend module architecture](BACKEND-MODULE-ARCHITECTURE.md). This structure is the user's choice, not a naming convention mandated by the PDF.
 
 ## Problem
 
