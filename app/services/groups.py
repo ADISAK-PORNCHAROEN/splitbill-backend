@@ -1,19 +1,11 @@
 from sqlalchemy.orm import Session
 
-from app.domain.types import bad_request, not_found
+from app.domain.types import not_found
+from app.entities.group import Group
 from app.repositories import groups
 
 
-def identify(session: Session, username: str | None):
-    if not username or not username.strip():
-        raise bad_request("X-User is required")
-    user = groups.find_user(session, username)
-    if user is None:
-        raise bad_request("Unknown X-User")
-    return user
-
-
-def authorize(session: Session, actor_id: int, group_id: int):
+def authorize(session: Session, actor_id: int, group_id: int) -> Group:
     group = groups.get_accessible_group(session, actor_id, group_id)
     if group is None:
         raise not_found()

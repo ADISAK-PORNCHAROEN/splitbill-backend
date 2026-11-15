@@ -1,13 +1,14 @@
 from datetime import UTC, datetime
-from decimal import Decimal
 
 from sqlalchemy.orm import Session
 
 from app.domain.money import format_money, parse_money
 from app.domain.splits import allocate
 from app.domain.types import DomainError, bad_request, not_found
-from app.entities.models import Expense, Share
-from app.repositories import expenses, groups
+from app.entities.expense import Expense
+from app.entities.share import Share
+from app.repositories import expenses
+from app.repositories import groups as group_repository
 from app.services.groups import authorize
 
 
@@ -47,7 +48,7 @@ def create(
         raise bad_request("Payer is required")
     amount = parse_money(body.get("amount"))
     shares = allocate(amount, body.get("split"))
-    members = {member.username: member.id for member in groups.members(session, group_id)}
+    members = {member.username: member.id for member in group_repository.members(session, group_id)}
     if paid_by not in members or any(name not in members for name in shares):
         raise bad_request("Payer and participants must be group members")
     expense_id = expenses.insert_expense(
@@ -92,11 +93,3 @@ def delete(session: Session, actor_id: int, group_id: int, expense_id: int) -> N
 def list_active(session: Session, actor_id: int, group_id: int) -> list[dict]:
     authorize(session, actor_id, group_id)
     return [serialize(session, expense) for expense in expenses.active(session, group_id)]
-
-
-def get_balances(session: Session, actor_id: int, group_id: int) -> list[dict]:
-    authorize(session, actor_id, group_id)
-    return [
-        {"member": username, "balance": format_money(Decimal(value))}
-        for username, value in expenses.balance_rows(session, group_id)
-    ]

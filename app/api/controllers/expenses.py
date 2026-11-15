@@ -8,8 +8,8 @@ from starlette.concurrency import run_in_threadpool
 
 from app.core.database import SessionLocal, get_session
 from app.domain.types import bad_request
-from app.services import expenses
-from app.services.groups import authorize, identify
+from app.services import expenses, identity
+from app.services.groups import authorize
 
 router = APIRouter(prefix="/groups/{group_id}/expenses")
 MAX_BODY_BYTES = 1024 * 1024
@@ -32,7 +32,7 @@ def process_expense(
     group_id: int, x_user: str | None, key: str | None, raw_body: bytearray, too_large: bool
 ) -> tuple[dict, bool]:
     with SessionLocal() as session:
-        actor = identify(session, x_user)
+        actor = identity.identify(session, x_user)
         authorize(session, actor.id, group_id)
         if too_large:
             raise bad_request("Request body is too large")
@@ -124,7 +124,7 @@ def list_expenses(
     session: Annotated[Session, Depends(get_session)],
     x_user: Annotated[str | None, Header()] = None,
 ):
-    actor = identify(session, x_user)
+    actor = identity.identify(session, x_user)
     return expenses.list_active(session, actor.id, group_id)
 
 
@@ -135,6 +135,6 @@ def delete_expense(
     session: Annotated[Session, Depends(get_session)],
     x_user: Annotated[str | None, Header()] = None,
 ):
-    actor = identify(session, x_user)
+    actor = identity.identify(session, x_user)
     expenses.delete(session, actor.id, group_id, expense_id)
     return Response(status_code=204)
